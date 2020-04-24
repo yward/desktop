@@ -100,6 +100,18 @@ static inline bool hasDarkSystray_private()
     }
 }
 
+QRect Utility::getTaskbarDimensions()
+{
+    APPBARDATA barData;
+    HWND hTaskbar = FindWindow(L"Shell_TrayWnd",NULL);
+    barData.cbSize = sizeof(APPBARDATA);
+    barData.hWnd = hTaskbar;
+
+    BOOL fResult = (BOOL)SHAppBarMessage(ABM_GETTASKBARPOS, &barData);
+    RECT barRect = barData.rc;
+    return QRect(barRect.left, barRect.top, (barRect.right - barRect.left), (barRect.bottom - barRect.top));
+}
+
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
 {
     QVariant value;
@@ -139,6 +151,16 @@ QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, cons
                 if (string.at(newCharSize - 1) == QChar('\0'))
                     string.resize(newCharSize - 1);
                 value = string;
+            }
+            break;
+        }
+        case REG_BINARY: {
+            BYTE buf[255];
+            DWORD bufSize = sizeof(buf);
+            Q_ASSERT(sizeInBytes <= bufSize);
+            result = RegQueryValueEx(hKey, reinterpret_cast<LPCWSTR>(valueName.utf16()), 0, &type, reinterpret_cast<LPBYTE>(&buf), &sizeInBytes);
+            if (result == ERROR_SUCCESS) {
+                value = buf[12];
             }
             break;
         }

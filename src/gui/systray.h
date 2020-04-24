@@ -51,12 +51,13 @@ public:
     bool isOpen();
 
     Q_INVOKABLE void pauseResumeSync();
-    Q_INVOKABLE int calcTrayWindowX();
-    Q_INVOKABLE int calcTrayWindowY();
     Q_INVOKABLE bool syncIsPaused();
     Q_INVOKABLE void setOpened();
     Q_INVOKABLE void setClosed();
     Q_INVOKABLE int screenIndex();
+    Q_INVOKABLE QPoint calcTrayIconCenter();
+    Q_INVOKABLE int taskbarOrientation();
+    Q_INVOKABLE QRect taskbarRect();
 
 signals:
     void currentUserChanged();
@@ -71,6 +72,7 @@ signals:
 
 public slots:
     void slotNewUserSelected();
+
 
 private:
     static Systray *_instance;
