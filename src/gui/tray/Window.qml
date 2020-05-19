@@ -91,7 +91,7 @@ Window {
         console.debug("Taskbar height:",taskbarHeight);
         console.debug("Taskbar width:",taskbarWidth);
 
-        if ( (Screen.width <= trayWindowX + trayWindow.width)) {
+        if (Screen.width <= trayWindowX + trayWindow.width) {
             console.debug("Out-of-screen condition on the right detected. Adjusting window position.");
             if (Qt.platform.os !== "linux") {
                 trayWindowX = Screen.width - trayWindow.width - 4;

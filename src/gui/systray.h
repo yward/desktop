@@ -33,6 +33,13 @@ namespace Ui {
     class Systray;
 }
 
+enum TaskBarPosition {
+    Bottom = 0,
+    Left,
+    Top,
+    Right
+};
+
 /**
  * @brief The Systray class
  * @ingroup gui
