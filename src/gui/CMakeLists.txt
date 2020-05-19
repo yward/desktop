@@ -261,8 +261,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib")
 endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DQT_QML_DEBUG ")
-
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     if(NOT WIN32)
         file(GLOB _icons "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
