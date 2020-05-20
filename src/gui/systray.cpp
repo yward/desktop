@@ -244,7 +244,7 @@ QRect Systray::currentScreenRect() const
 #endif
 }
 
-QPoint Systray::computeWindowReferencePoint(int width, int height) const
+QPoint Systray::computeWindowReferencePoint() const
 {
     const auto trayIconCenter = calcTrayIconCenter();
     const auto taskbarRect = taskbarGeometry();
@@ -254,8 +254,8 @@ QPoint Systray::computeWindowReferencePoint(int width, int height) const
     switch(taskbarScreenEdge) {
     case TaskBarPosition::Bottom:
         return {
-            trayIconCenter.x() - width / 2,
-            screenRect.bottom() - taskbarRect.height() - height - 4
+            trayIconCenter.x(),
+            screenRect.bottom() - taskbarRect.height() - 4
         };
     case TaskBarPosition::Left:
         return {
@@ -264,12 +264,12 @@ QPoint Systray::computeWindowReferencePoint(int width, int height) const
         };
     case TaskBarPosition::Top:
         return {
-            trayIconCenter.x() - width / 2,
+            trayIconCenter.x(),
             screenRect.top() + taskbarRect.height() + 4
         };
     case TaskBarPosition::Right:
         return {
-            screenRect.right() - taskbarRect.width() - width - 4,
+            screenRect.right() - taskbarRect.width() - 4,
             trayIconCenter.y()
         };
     }
@@ -278,38 +278,44 @@ QPoint Systray::computeWindowReferencePoint(int width, int height) const
 
 QPoint Systray::computeWindowPosition(int width, int height) const
 {
-    auto referencePoint = computeWindowReferencePoint(width, height);
+    const auto referencePoint = computeWindowReferencePoint();
 
     const auto taskbarScreenEdge = taskbarOrientation();
-    const auto taskbarRect = taskbarGeometry();
     const auto screenRect = currentScreenRect();
 
-    if (screenRect.right() <= referencePoint.x() + width) {
-        referencePoint.rx() = screenRect.right() - width - 4;
-#if !defined(Q_OS_WIN) && !defined(Q_OS_MACOS)
-        referencePoint.rx() -= taskbarScreenEdge == TaskBarPosition::Right ? taskbarRect.width() : 0;
-#endif
-    }
+    auto topLeft = [=]() {
+        switch(taskbarScreenEdge) {
+        case TaskBarPosition::Bottom:
+            return referencePoint - QPoint(width / 2, height);
+        case TaskBarPosition::Left:
+            return referencePoint;
+        case TaskBarPosition::Top:
+            return referencePoint - QPoint(width / 2, 0);
+        case TaskBarPosition::Right:
+            return referencePoint - QPoint(width, 0);
+        }
+        Q_UNREACHABLE();
+    }();
+    const auto bottomRight = topLeft + QPoint(width, height);
+    const auto windowRect = [=]() {
+        const auto rect = QRect(topLeft, bottomRight);
+        auto offset = QPoint();
 
-    if (referencePoint.x() <= screenRect.left()) {
-        referencePoint.rx() = screenRect.left() + 4;
-#if !defined(Q_OS_WIN) && !defined(Q_OS_MACOS)
-        referencePoint.rx() += taskbarScreenEdge == TaskBarPosition::Left ? taskbarRect.width() : 0;
-#endif
-    }
+        if (rect.left() < screenRect.left()) {
+            offset.setX(screenRect.left() - rect.left() + 4);
+        } else if (rect.right() > screenRect.right()) {
+            offset.setX(screenRect.right() - rect.right() - 4);
+        }
 
-    if (referencePoint.y() <= screenRect.top()) {
-        referencePoint.ry() = screenRect.top() + 4;
+        if (rect.top() < screenRect.top()) {
+            offset.setY(screenRect.top() - rect.top() + 4);
+        } else if (rect.bottom() > screenRect.bottom()) {
+            offset.setY(screenRect.bottom() - rect.bottom() - 4);
+        }
 
-#if !defined(Q_OS_WIN) && !defined(Q_OS_MACOS)
-        referencePoint.ry() += taskbarScreenEdge == TaskBarPosition::Top ? taskbarRect.height() : 0;
-#endif
-    }
-    if (screenRect.bottom() <= referencePoint.y() + height) {
-        referencePoint.ry() = screenRect.bottom() - height - 4;
-    }
-
-    return referencePoint;
+        return rect.translated(offset);
+    }();
+    return windowRect.topLeft();
 }
 
 /// Returns a QPoint that constitutes the center coordinate of the tray icon
