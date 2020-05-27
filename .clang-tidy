@@ -1,6 +1,7 @@
 Checks: '-*,
     modernize-make-shared,
     modernize-replace-*,
+    modernize-return-braced-init-list,
     modernize-shrink-to-fit,
     modernize-use-bool-literals,
     modernize-use-emplace,
