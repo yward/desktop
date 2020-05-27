@@ -178,7 +178,7 @@ namespace FileSystem {
                 longStr.append("\\\\?");
             }
         } else {
-            longStr.append("\\\\?\\"); // prepend string by this four magic chars.
+            longStr.append(R"(\\?\)"); // prepend string by this four magic chars.
         }
         longStr += str;
 

@@ -1,5 +1,6 @@
 Checks: '-*,
     modernize-make-shared,
+    modernize-raw-string-literal,
     modernize-replace-*,
     modernize-shrink-to-fit,
     modernize-use-bool-literals,
