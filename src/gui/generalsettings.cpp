@@ -160,7 +160,7 @@ void GeneralSettings::loadMiscSettings()
 void GeneralSettings::slotUpdateInfo()
 {
     // Note: the sparkle-updater is not an OCUpdater
-    OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance());
+    auto *updater = qobject_cast<OCUpdater *>(Updater::instance());
     if (ConfigFile().skipUpdateCheck()) {
         updater = nullptr; // don't show update info if updates are disabled
     }
@@ -191,7 +191,7 @@ void GeneralSettings::slotUpdateInfo()
 
 void GeneralSettings::slotUpdateCheckNow()
 {
-    OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance());
+    auto *updater = qobject_cast<OCUpdater *>(Updater::instance());
     if (ConfigFile().skipUpdateCheck()) {
         updater = nullptr; // don't show update info if updates are disabled
     }
