@@ -3,6 +3,7 @@ Checks: '-*,
     modernize-replace-*,
     modernize-shrink-to-fit,
     modernize-use-bool-literals,
+    modernize-use-default-member-init,
     modernize-use-emplace,
     modernize-use-noexcept,
     modernize-use-transparent-functors,
@@ -12,3 +13,6 @@ WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
+CheckOptions:
+  - key: modernize-use-default-member-init.UseAssignment
+    value: 1
