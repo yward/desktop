@@ -125,7 +125,7 @@
  *            avalanche. About 36+6len instructions.
  */
 static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initval) {
-   uint32_t a,b,c,len;
+   uint32_t a = 0,b = 0,c = 0,len = 0;
 
    /* Set up the internal state */
    len = length;
@@ -184,7 +184,7 @@ static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initv
  *            achieves avalanche. About 41+5len instructions.
  */
 static inline uint64_t c_jhash64(const uint8_t *k, uint64_t length, uint64_t intval) {
-  uint64_t a,b,c,len;
+  uint64_t a = 0,b = 0,c = 0,len = 0;
 
   /* Set up the internal state */
   len = length;

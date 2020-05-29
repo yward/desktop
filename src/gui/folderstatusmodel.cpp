@@ -840,7 +840,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         }
         auto folder = _folders.at(i)._folder;
 
-        bool ok;
+        bool ok = false;
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if (!ok) {
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
@@ -1146,7 +1146,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         }
         auto folder = _folders.at(i)._folder;
 
-        bool ok;
+        bool ok = false;
         auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         if (!ok) {
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";

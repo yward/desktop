@@ -143,7 +143,7 @@ QByteArray encryptPrivateKey(
 
     QByteArray iv = generateRandom(12);
 
-    EVP_CIPHER_CTX *ctx;
+    EVP_CIPHER_CTX *ctx = nullptr;
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Error creating cipher";
@@ -234,7 +234,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     cipherTXT.chop(16);
 
     // Init
-    EVP_CIPHER_CTX *ctx;
+    EVP_CIPHER_CTX *ctx = nullptr;
 
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
@@ -264,7 +264,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     }
 
     auto *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
-    int plen;
+    int plen = 0;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
      * EVP_DecryptUpdate can be called multiple times if necessary
@@ -323,7 +323,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     cipherTXT.chop(16);
 
     // Init
-    EVP_CIPHER_CTX *ctx;
+    EVP_CIPHER_CTX *ctx = nullptr;
 
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
@@ -353,7 +353,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     }
 
     auto *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
-    int plen;
+    int plen = 0;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
      * EVP_DecryptUpdate can be called multiple times if necessary
@@ -411,7 +411,7 @@ QByteArray privateKeyToPem(const QByteArray key) {
 QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     QByteArray iv = generateRandom(16);
 
-    EVP_CIPHER_CTX *ctx;
+    EVP_CIPHER_CTX *ctx = nullptr;
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Error creating cipher";
@@ -1378,7 +1378,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     }
 
     // Init
-    EVP_CIPHER_CTX *ctx;
+    EVP_CIPHER_CTX *ctx = nullptr;
 
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
@@ -1463,7 +1463,7 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     output->open(QIODevice::WriteOnly);
 
     // Init
-    EVP_CIPHER_CTX *ctx;
+    EVP_CIPHER_CTX *ctx = nullptr;
 
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {

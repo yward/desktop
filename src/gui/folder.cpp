@@ -953,7 +953,7 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
     auto journal = journalDb();
 
     // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
-    bool ok1, ok2;
+    bool ok1 = false, ok2 = false;
     auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
     if (ok1 && ok2 && !blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {
